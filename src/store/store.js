@@ -97,7 +97,7 @@ export default new Vuex.Store({
       const selection = sel2idx(toSmooth, operation.selection[0], operation.selection[1]);
       function postProcess(result) {
         if (operation.maintainElevations) {
-          return restoreAscentDescentSection(result.smoothedValues, toSmooth, selection.startIdx, selection.stopIdx);
+          return restoreAscentDescentSection(result.smoothedValues, toSmooth, selection);
         } else {
           return result;
         }
