@@ -25,7 +25,7 @@ export function updateTimeIntervals(toUpdate, timeShift, averageSlope) {
     smoothedValues.push(point);
   }
   return {
-    smoothedValues,
+    smoothedValues: smoothedValues,
     averageSlope: averageSlope
   };
 }

@@ -10,7 +10,8 @@ import {shiftSlope} from '@/utilities/shiftSlope';
 import {kalmanFilter} from '@/utilities/kalmanFilter';
 import {slopeSmoothing} from '@/utilities/slopeSmoothing';
 import {updateTimeIntervals} from '@/utilities/updateTimeIntervals';
-import {restoreAscentDescent} from '@/utilities//restoreAscentDescent';
+import {restoreAscentDescentSection} from '@/utilities/restoreAscentDescent';
+import {sel2idx} from '@/utilities/sel2idx';
 
 Vue.use(Vuex);
 
@@ -93,30 +94,38 @@ export default new Vuex.Store({
         return;
       }
       const toSmooth = context.state.smoothedValues ? context.state.smoothedValues : context.state.rawValues;
+      const selection = sel2idx(toSmooth, operation.selection[0], operation.selection[1]);
+      function postProcess(result) {
+        if (operation.maintainElevations) {
+          return restoreAscentDescentSection(result.smoothedValues, toSmooth, selection.startIdx, selection.stopIdx);
+        } else {
+          return result;
+        }
+      }
       let smoothedValues;
       switch (operation.name) {
         case 'smooth': {
-          smoothedValues = boxSmoothing(toSmooth, operation.numberOfPoints, operation.selection);
+          smoothedValues = postProcess(boxSmoothing(toSmooth, operation.numberOfPoints, selection));
           break;
         }
         case 'smoothSlope': {
-          smoothedValues = slopeSmoothing(toSmooth, operation.numberOfPoints, operation.selection);
+          smoothedValues = postProcess(slopeSmoothing(toSmooth, operation.numberOfPoints, selection));
           break;
         }
         case 'savitzkyGolay': {
-          smoothedValues = savitzkyGolay(toSmooth, operation, operation.selection);
+          smoothedValues = postProcess(savitzkyGolay(toSmooth, operation, selection));
           break;
         }
         case 'kalmanFilter': {
-          smoothedValues = kalmanFilter(toSmooth, operation, operation.selection);
+          smoothedValues = postProcess(kalmanFilter(toSmooth, operation, selection));
           break;
         }
         case 'slopeRange': {
-          smoothedValues = setSlopeRange(toSmooth, operation.range, operation.selection);
+          smoothedValues = postProcess(setSlopeRange(toSmooth, operation.range, selection));
           break;
         }
         case 'flatten': {
-          smoothedValues = flattenPoints(toSmooth, operation.slopeDelta, operation.selection);
+          smoothedValues = postProcess(flattenPoints(toSmooth, operation.slopeDelta, selection));
           break;
         }
         case 'slopePercentage': {
@@ -125,10 +134,6 @@ export default new Vuex.Store({
         }
         case 'elevate': {
           smoothedValues = elevatePoints(toSmooth, operation.metres, operation.selection);
-          break;
-        }
-        case 'restoreAscentDescent': {
-          smoothedValues = restoreAscentDescent(toSmooth, context.state.rawValues);
           break;
         }
         case 'updateTimeIntervals': {

@@ -14,6 +14,10 @@
     </div>
     <div class="instruct">2. Click on an apply button to select the type of smoothing:</div>
     <div class="smoother-input">
+        <v-checkbox
+          label="Maintain elevation of start and end points"
+          v-model="maintainElevations"
+        ></v-checkbox>
       <div class="input-row">
         <v-btn
           @click="onSlopeSmoothing"
@@ -133,13 +137,6 @@
             v-model.number="timeShift"
         />
       </div>
-      <div class="input-row">
-        <v-btn
-            @click="onRestoreAscentDescent"
-            :disabled="!canSmooth">
-            Restore total ascent descent
-        </v-btn>
-      </div>
       <v-btn
         @click="onResetData"
         :disabled="!canSmooth">
@@ -207,6 +204,7 @@ export default {
     kalmanQ: 3,
     timeShift: 100,
     useDeltaSlope: false,
+    maintainElevations: true,
     gpxFileName: 'smoother.gpx',
     gpxName: '',
     gpxDescription: '',
@@ -244,6 +242,7 @@ export default {
         name,
         ...parameters,
         selection: this.selection,
+        maintainElevations: this.maintainElevations,
         enabled: true,
         id: generateUUID()
       });
@@ -275,9 +274,6 @@ export default {
     },
     onUpdateTimeIntervals() {
       this.addOperation('updateTimeIntervals', {timeShift: this.timeShift});
-    },
-    onRestoreAscentDescent() {
-      this.addOperation('restoreAscentDescent');
     },
     onResetData() {
       store.dispatch('resetSmoothing');

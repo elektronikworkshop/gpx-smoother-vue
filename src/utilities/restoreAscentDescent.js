@@ -1,6 +1,7 @@
 import {averageSlopeFromTotal} from './displayFormat';
 
-export function restoreAscentDescentSection(toRestore, rawValues, startidx, stopidx) {
+export function restoreAscentDescentSection(toRestore, rawValues, startidx, stopidx)
+{
   const section = restoreAscentDescent(toRestore.slice(startidx, stopidx),
                                        rawValues.slice(startidx, stopidx));
   let restored = rawValues.slice();
@@ -17,8 +18,8 @@ export function restoreAscentDescentSection(toRestore, rawValues, startidx, stop
   };
 }
 
-export function restoreAscentDescent(toRestore, rawValues) {
-
+function restoreAscentDescent(toRestore, rawValues)
+{
     const dataLength = toRestore.length;
     if (rawValues.length === 0 ||
         toRestore.length === 0 ||

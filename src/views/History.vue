@@ -80,26 +80,32 @@ export default {
       store.dispatch('redoOperations');
     },
     getOperationDescription(operation) {
+      let opDesc;
       switch (operation.name) {
         case 'smoothSlope': {
-          return `Slope Box Smoothing: Smoothed over ${operation.numberOfPoints} Points`;
+          opDesc = `Slope Box Smoothing: Smoothed over ${operation.numberOfPoints} Points`;
+          break;
         }
         case 'smooth': {
-          return `Elevation Box Smoothing: Smoothed over ${operation.numberOfPoints} Points`;
+          opDesc = `Elevation Box Smoothing: Smoothed over ${operation.numberOfPoints} Points`;
+          break;
         }
         case 'savitzkyGolay': {
-          return `Savitzky Golay Smoothing: Window Size: ${operation.windowSize}, Derivative: ${operation.derivative}, ` +
+          opDesc = `Savitzky Golay Smoothing: Window Size: ${operation.windowSize}, Derivative: ${operation.derivative}, ` +
               `Polynomial:  ${operation.polynomial}`;
+          break;
         }
         case 'kalmanFilter': {
-          return `Kalman Filter: R: ${operation.R}, Q: ${operation.Q}, Use Delta Slope:  ` +
-              (operation.useDeltaSlope ? 'true' : 'false');
+          opDesc = `Kalman Filter: R: ${operation.R}, Q: ${operation.Q}, Use Delta Slope: ${operation.useDeltaSlope}`;
+          break;
          }
         case 'slopeRange': {
-          return `Slope Range: Minimum Slope: ${operation.range.minSlope},  Maximum Slope: ${operation.range.maxSlope}`;
+          opDesc = `Slope Range: Minimum Slope: ${operation.range.minSlope}, Maximum Slope: ${operation.range.maxSlope}`;
+          break;
         }
         case 'flatten': {
-          return `Flatten Values:  Maximum Change in Slope Between Points:  ${operation.slopeDelta}`;
+          opDesc = `Flatten Values:  Maximum Change in Slope Between Points: ${operation.slopeDelta}`;
+          break;
         }
         case 'slopePercentage': {
           return `Slope Difficulty: Percentage slope change: ${operation.slopeShift}`;
@@ -107,14 +113,12 @@ export default {
         case 'elevate': {
           return `Elevate Values: Shift in metres: ${operation.metres}`;
         }
-        case 'restoreAscentDescent': {
-          return 'Restore ascent/descent';
-        }
         case 'updateTimeIntervals': {
           const timeShift = parseInt(1000.0 / (operation.timeShift / 100.0), 10);
           return `Time interval of each point is 1 second shifted by ${operation.timeShift} percent (${timeShift} ms)`;
         }
       }
+      return `${opDesc}, Maintain Elevations: ${operation.maintainElevations}`;
     }
   }
 };

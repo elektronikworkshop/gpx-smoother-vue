@@ -21,7 +21,7 @@ export function elevatePoints(toElevate, metres, selected) {
     smoothedValues.push(point);
   }
   return {
-    smoothedValues,
+    smoothedValues: smoothedValues,
     averageSlope: averageSlopeFromTotal(totalSlope, dataLength)
   };
 }

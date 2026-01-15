@@ -1,6 +1,6 @@
 import {averageSlopeFromTotal} from './displayFormat';
 
-export function boxSmoothing(values, numPoints, selected) {
+export function boxSmoothing(values, numPoints, selection) {
   const dataLength = values.length;
   if (dataLength === 0) {
     return [];
@@ -10,9 +10,6 @@ export function boxSmoothing(values, numPoints, selected) {
     smoothingSize = 2;
   }
   const toSmooth = values;
-  const startDistance = selected[0];
-  const endDistance = selected[1];
-  let distance = 0;
   let newElevations = [];
   for (let i = 0; i < dataLength; i++) {
     let sumValues = 0;
@@ -36,8 +33,7 @@ export function boxSmoothing(values, numPoints, selected) {
     let point = {
       ...toSmooth[i]
     };
-    distance = distance + point.distance;
-    if (distance >= startDistance && distance <= endDistance) {
+    if (i >= selection.startIdx && i <= selection.stopIdx) {
       point.ele = newElevations[i];
       point.slope = 0;
       if (previous && point.distance) {
@@ -50,8 +46,7 @@ export function boxSmoothing(values, numPoints, selected) {
   }
 
   return {
-    smoothedValues,
+    smoothedValues: smoothedValues,
     averageSlope: averageSlopeFromTotal(totalSlope, dataLength)
   };
-
 }
