@@ -14,95 +14,97 @@
     </div>
     <div class="instruct">2. Click on an apply button to select the type of smoothing:</div>
     <div class="smoother-input">
+      <div class="smoothing-algorithms">
         <v-checkbox
-          label="Maintain elevation of start and end points"
+          label="Maintain start/end elevations"
           v-model="maintainElevations"
         ></v-checkbox>
-      <div class="input-row">
-        <v-btn
-          @click="onSlopeSmoothing"
-          :disabled="!canSmooth">
-          Apply Slope Box-Smoothing
-        </v-btn>
-        <v-text-field
-          label="Number of points to smoother over(odd)"
-          v-model.number="numSlopeSmoothingPoints"
-        />
-      </div>
-      <div class="input-row">
-        <v-btn
-          @click="onSmoothValues"
-          :disabled="!canSmooth">
-          Apply Elevation Box-Smoothing
-        </v-btn>
-        <v-text-field
-          label="Number of points to smoother over(odd)"
-          v-model.number="numSmoothingPoints"
-        />
-      </div>
-      <div class="input-row">
-        <v-btn
-          @click="onSavitzyGolay"
-          :disabled="!canSmooth">
-          Apply Savitzky-Golay Smoothing
-        </v-btn>
-        <v-text-field
-          label="Window Size (odd)"
-          v-model.number="windowSize"
-        />
-        <v-text-field
-          label="Derivative"
-          v-model.number="derivative"
-        />
-        <v-text-field
-          label="Polynomial (1 to 5)"
-          v-model.number="polynomial"
-        />
-      </div>
-      <div class="input-row">
-        <v-btn
-          @click="onKalmanFilter"
-          :disabled="!canSmooth">
-          Apply Kalman Filter
-        </v-btn>
-        <v-text-field
-          label="Process Noise (R)"
-          v-model.number="kalmanR"
-        />
-        <v-text-field
-          label="Measurement Noise (Q)"
-          v-model.number="kalmanQ"
-        />
-        <v-checkbox
-          label="Use Delta Slope"
-          v-model="useDeltaSlope"
-        ></v-checkbox>
-      </div>
-      <div class="input-row">
-        <v-btn
-          @click="onSetSlopeRange"
-          :disabled="!canSmooth">
-          Apply Slope Range
-        </v-btn>
-        <v-text-field
-          label="Minimum Slope"
-          v-model.number="minSlope"
-        />
-        <v-text-field
-          label="Maximum Slope"
-          v-model.number="maxSlope"
-        />
-      </div>
-      <div class="input-row">
-        <v-btn
-          @click="onFlattenValues"
-          :disabled="!canSmooth">
-          Apply Flatten Values
-        </v-btn>
-        <v-text-field
-          label="Maximum Change In Slope Between Points:"
-          v-model.number="slopeDelta"
-        />
+        <div class="input-row">
+          <v-btn
+            @click="onSlopeSmoothing"
+            :disabled="!canSmooth">
+            Apply Slope Box-Smoothing
+          </v-btn>
+          <v-text-field
+            label="Number of points to smoother over(odd)"
+            v-model.number="numSlopeSmoothingPoints"
+          />
+        </div>
+        <div class="input-row">
+          <v-btn
+            @click="onSmoothValues"
+            :disabled="!canSmooth">
+            Apply Elevation Box-Smoothing
+          </v-btn>
+          <v-text-field
+            label="Number of points to smoother over(odd)"
+            v-model.number="numSmoothingPoints"
+          />
+        </div>
+        <div class="input-row">
+          <v-btn
+            @click="onSavitzyGolay"
+            :disabled="!canSmooth">
+            Apply Savitzky-Golay Smoothing
+          </v-btn>
+          <v-text-field
+            label="Window Size (odd)"
+            v-model.number="windowSize"
+          />
+          <v-text-field
+            label="Derivative"
+            v-model.number="derivative"
+          />
+          <v-text-field
+            label="Polynomial (1 to 5)"
+            v-model.number="polynomial"
+          />
+        </div>
+        <div class="input-row">
+          <v-btn
+            @click="onKalmanFilter"
+            :disabled="!canSmooth">
+            Apply Kalman Filter
+          </v-btn>
+          <v-text-field
+            label="Process Noise (R)"
+            v-model.number="kalmanR"
+          />
+          <v-text-field
+            label="Measurement Noise (Q)"
+            v-model.number="kalmanQ"
+          />
+          <v-checkbox
+            label="Use Delta Slope"
+            v-model="useDeltaSlope"
+          ></v-checkbox>
+        </div>
+        <div class="input-row">
+          <v-btn
+            @click="onSetSlopeRange"
+            :disabled="!canSmooth">
+            Apply Slope Range
+          </v-btn>
+          <v-text-field
+            label="Minimum Slope"
+            v-model.number="minSlope"
+          />
+          <v-text-field
+            label="Maximum Slope"
+            v-model.number="maxSlope"
+          />
+        </div>
+        <div class="input-row">
+          <v-btn
+            @click="onFlattenValues"
+            :disabled="!canSmooth">
+            Apply Flatten Values
+          </v-btn>
+          <v-text-field
+            label="Maximum Change In Slope Between Points:"
+            v-model.number="slopeDelta"
+          />
+        </div>
       </div>
       <div class="input-row">
         <v-btn
@@ -340,5 +342,8 @@ export default {
     margin: 20px
     .v-input__slot
       max-width: 600px
+
+  .save  .smoothing-algorithms
+    margin-left: 30px
 
 </style>
