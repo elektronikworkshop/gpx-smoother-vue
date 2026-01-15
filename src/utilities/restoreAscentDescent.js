@@ -18,54 +18,50 @@ export function restoreAscentDescentSection(toRestore, rawValues, startidx, stop
   };
 }
 
-function restoreAscentDescent(toRestore, rawValues)
+function restoreAscentDescent(modValues, srcValues)
 {
-    const dataLength = toRestore.length;
-    if (rawValues.length === 0 ||
-        toRestore.length === 0 ||
-        toRestore.length != dataLength) {
+    const L = modValues.length;
+    if (srcValues.length === 0 ||
+        modValues.length === 0 ||
+        modValues.length != srcValues.length) {
       return;
     }
 
-    var distanceRaw = 0;
-    for (var i = 0; i < dataLength; i++) {
-      distanceRaw += rawValues[i].distance;
-    }
+    var totalDistance = 0;
+    srcValues.forEach(point => {
+      totalDistance += point.distance;
+    });
 
-    const rawB = rawValues[0];
-    const rawE = rawValues[dataLength - 1];
-    const smoothB = toRestore[0];
-    const smoothE = toRestore[dataLength - 1];
+    const srcStartPoint = srcValues[0];
+    const srcEndPoint = srcValues[L - 1];
+    const modStartPoint = modValues[0];
+    const modEndPoint = modValues[L - 1];
 
-    const startOff = rawB.ele - smoothB.ele;
-    const endOff = rawE.ele - smoothE.ele;
-    const slopeComp = (endOff - startOff) / distanceRaw;
+    const startVOffset = srcStartPoint.ele - modStartPoint.ele;
+    const endVOffset = srcEndPoint.ele - modEndPoint.ele;
+    const slopeComp = (endVOffset - startVOffset) / totalDistance;
 
-    const restoredAscentVals = [];
     let totalSlope = 0;
     let dist = 0;
     let previous = null;
-    for (i = 0; i < dataLength; i++) {
-      let point =  {
-        ...toRestore[i]
-      };
+    const compensatedValues = modValues.slice();
+    compensatedValues.forEach(point => {
       if (previous) {
         point.slope = 0;
         if (point.distance) {
           dist += point.distance;
-          point.ele += dist * slopeComp + startOff;
+          point.ele += dist * slopeComp + startVOffset;
           point.slope = (point.ele - previous.ele) / point.distance;
         }
       } else {
-        point.ele += startOff;
+        point.ele += startVOffset;
       }
-      restoredAscentVals.push(point);
       previous = point;
       totalSlope += point.slope;
-    }
+    });
 
     return {
-      smoothedValues: restoredAscentVals,
-      averageSlope: averageSlopeFromTotal(totalSlope, dataLength)
+      smoothedValues: compensatedValues,
+      averageSlope: averageSlopeFromTotal(totalSlope, L)
     };
 }

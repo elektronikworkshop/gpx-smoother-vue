@@ -343,7 +343,7 @@ export default {
     .v-input__slot
       max-width: 600px
 
-  .save  .smoothing-algorithms
+  .smoothing-algorithms
     margin-left: 30px
 
 </style>
