@@ -10,6 +10,7 @@ import {shiftSlope} from '@/utilities/shiftSlope';
 import {kalmanFilter} from '@/utilities/kalmanFilter';
 import {slopeSmoothing} from '@/utilities/slopeSmoothing';
 import {updateTimeIntervals} from '@/utilities/updateTimeIntervals';
+import {restoreAscentDescent} from '@/utilities//restoreAscentDescent';
 
 Vue.use(Vuex);
 
@@ -124,6 +125,10 @@ export default new Vuex.Store({
         }
         case 'elevate': {
           smoothedValues = elevatePoints(toSmooth, operation.metres, operation.selection);
+          break;
+        }
+        case 'restoreAscentDescent': {
+          smoothedValues = restoreAscentDescent(toSmooth, context.state.rawValues);
           break;
         }
         case 'updateTimeIntervals': {

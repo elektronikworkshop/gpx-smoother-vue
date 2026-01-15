@@ -133,6 +133,13 @@
             v-model.number="timeShift"
         />
       </div>
+      <div class="input-row">
+        <v-btn
+            @click="onRestoreAscentDescent"
+            :disabled="!canSmooth">
+            Restore total ascent descent
+        </v-btn>
+      </div>
       <v-btn
         @click="onResetData"
         :disabled="!canSmooth">
@@ -268,6 +275,9 @@ export default {
     },
     onUpdateTimeIntervals() {
       this.addOperation('updateTimeIntervals', {timeShift: this.timeShift});
+    },
+    onRestoreAscentDescent() {
+      this.addOperation('restoreAscentDescent');
     },
     onResetData() {
       store.dispatch('resetSmoothing');
