@@ -1,4 +1,5 @@
 import {averageSlopeFromTotal} from './displayFormat';
+import {restoreAscentDescentSection} from './restoreAscentDescent';
 
 export function kalmanFilter(toSmooth, options, selected) {
   let KalmanFilter = require('kalmanjs');
@@ -12,6 +13,8 @@ export function kalmanFilter(toSmooth, options, selected) {
   const startDistance = selected[0];
   const endDistance = selected[1];
   let distance = 0;
+  let startidx = 0;
+  let stopidx = dataLength - 1;
   for (let i = 0; i < dataLength; i++) {
     let point = {
       ...toSmooth[i]
@@ -19,6 +22,10 @@ export function kalmanFilter(toSmooth, options, selected) {
     if (previous) {
       distance = distance + point.distance;
       if (distance >= startDistance && distance <= endDistance) {
+        if (startidx === 0) {
+          startidx = i;
+        }
+        stopidx = i;
         if (options.useDeltaSlope) {
           let deltaSlope = point.slope - previous.slope;
           point.slope = kf.filter(deltaSlope);
@@ -32,8 +39,9 @@ export function kalmanFilter(toSmooth, options, selected) {
     smoothedValues.push(point);
     previous = point;
   }
+  const restored = restoreAscentDescentSection(smoothedValues, toSmooth, startidx, stopidx);
   return {
-    smoothedValues,
+    smoothedValues: restored.smoothedValues,
     averageSlope: averageSlopeFromTotal(totalSlope, dataLength)
   };
 }

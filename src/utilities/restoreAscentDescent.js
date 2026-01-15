@@ -1,5 +1,22 @@
 import {averageSlopeFromTotal} from './displayFormat';
 
+export function restoreAscentDescentSection(toRestore, rawValues, startidx, stopidx) {
+  const section = restoreAscentDescent(toRestore.slice(startidx, stopidx),
+                                       rawValues.slice(startidx, stopidx));
+  let restored = rawValues.slice();
+  restored.splice(startidx, section.smoothedValues.length, ...section.smoothedValues);
+
+  let totalSlope = 0;
+  restored.forEach( point => {
+    totalSlope += point.slope;
+  });
+
+  return {
+    smoothedValues: restored,
+    averageSlope: averageSlopeFromTotal(totalSlope, toRestore.length)
+  };
+}
+
 export function restoreAscentDescent(toRestore, rawValues) {
 
     const dataLength = toRestore.length;
