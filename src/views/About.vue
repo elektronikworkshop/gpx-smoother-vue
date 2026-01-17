@@ -4,7 +4,7 @@
     <p>
       The GPX Smoother lets you load a GPX file, and smooth out the elevation, to make it easier to ride in your
       favourite trainer software.
-    <p/>
+    </p>
 
     <h2>Smoothing</h2>
     <p>
@@ -22,7 +22,12 @@
     </ul>
 
     <p>The <span class="font-weight-bold">One Second Time Intervals</span> button will add a time stamp to each track point, and each time stamp
-       will be one second from the previous time stamp.  Percentage time shift will speed up or slow down the time intervals accordingly.</p>
+       will be one second from the previous time stamp.  Percentage time shift will speed up or slow down the time intervals accordingly.
+    </p>
+    <p>
+      When the <span class="font-weight-bold">Maintain start/end elevations</span> check box is checked, the track is readjusted after the smoothing algorithm such that the original
+      elevations at the start and end point of the current selection are maintained. Note that this can slightly alter the gradients.
+    </p>
     <p>
       Slide the <span class="font-weight-bold">triangular handles</span> on the smaller graph to select only a portion of the ride to smooth.
     </p>
@@ -65,6 +70,11 @@
     </ul>
 
     <h2 class="change-log">Change Log</h2>
+
+    <h3>Version 1.11.0 - 2026-01-17</h3>
+    <ul>
+      <li>Add a post processing option to maintain start and end point elevations during smoothing operations.</li>
+    </ul>
 
     <h3>Version 1.10.0 - 2022-04-09</h3>
     <ul>
